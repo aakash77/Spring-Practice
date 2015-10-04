@@ -4,8 +4,13 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.aakash.cmpe275.lab1_AOP.exceptions.UnauthorizedException;
 import com.aakash.cmpe275.lab1_AOP.model.Secret;
 
+/**
+ * @author Aakash Mangal
+ * Secret Service Interface
+ */
 @Service
 public interface SecretService {
 	
@@ -23,7 +28,7 @@ public interface SecretService {
  	* @param secretId the ID of the secret being requested
  	* @return the requested secret  
  	*/
-	public Secret readSecret(String userId, UUID secretId);
+	public Secret readSecret(String userId, UUID secretId) throws UnauthorizedException;
     
 	/**
  	* Share a secret with another user. The secret may not have been created by the current user.
@@ -31,7 +36,7 @@ public interface SecretService {
  	* @param secretId the ID of the secret being shared
  	* @param targetUserId the ID of the user to share the secret with
  	*/
-	public void shareSecret(String userId, UUID secretId, String targetUserId);
+	public void shareSecret(String userId, UUID secretId, String targetUserId) throws UnauthorizedException;
     
 	/**
  	* Unshare the current user's own secret with another user.
@@ -39,5 +44,5 @@ public interface SecretService {
  	* @param secretId the ID of the secret being unshared
  	* @param targetUserId the ID of the user to unshare the secret with
  	*/
-	public void unshareSecret(String userId, UUID secretId, String targetUserId);
+	public void unshareSecret(String userId, UUID secretId, String targetUserId) throws UnauthorizedException;
 }

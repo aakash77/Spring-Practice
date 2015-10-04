@@ -10,14 +10,32 @@ public class Secret {
 	private UUID id;
 	private String message;
 	
+	/**
+	 * Default Constructor
+	 */
+	public Secret(){
+		this.message="Default Secret";
+	}
+	
+	/**
+	 * Parameterized Constructor
+	 * @param message
+	 */
 	public Secret(String message){
 		this.message = message;
+	}
+	
+	/**
+	 * method to generate unique UUID
+	 */
+	public void generateId(){
 		this.id = UUID.randomUUID();
 	}
+	
 	/**
 	 * @return the UUID
 	 */
-	public UUID getUUID() {
+	public UUID getId() {
 		return id;
 	}
 	/**

@@ -4,10 +4,14 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Component;
 
-import com.aakash.cmpe275.lab1_AOP.App;
 import com.aakash.cmpe275.lab1_AOP.model.Secret;
+import com.aakash.cmpe275.lab1_AOP.service.DataService;
 import com.aakash.cmpe275.lab1_AOP.service.SecretService;
 
+/**
+ * @author Aakash Mangal
+ *	Implementation of Secret Service
+ */
 @Component
 public class SecretServiceImpl implements SecretService {
 	
@@ -17,10 +21,10 @@ public class SecretServiceImpl implements SecretService {
 	 * @param secret denotes the new secret to be added
 	 */
 	public UUID storeSecret(String userId, Secret secret) {
-		System.out.println("In class impl");
-		String key = userId+"#"+secret.getUUID();
-		App.userSecrets.put(key,secret);
-		return secret.getUUID();
+		secret.generateId();
+		String key = userId+"#"+secret.getId();
+		DataService.userSecrets.put(key,secret);
+		return secret.getId();
 	}
 	
 	/**
@@ -31,10 +35,10 @@ public class SecretServiceImpl implements SecretService {
 	public Secret readSecret(String userId, UUID secretId) {
 		
 		String key = userId+"#"+secretId;
-		if(App.userSecrets.containsKey(key))
-			return App.userSecrets.get(key);
+		if(DataService.userSecrets.containsKey(key))
+			return DataService.userSecrets.get(key);
 		else
-			return App.sharedSecrets.get(key);
+			return DataService.sharedSecrets.get(key);
 	}
 	
 	/**
@@ -45,11 +49,11 @@ public class SecretServiceImpl implements SecretService {
 	 */
 	public void shareSecret(String userId, UUID secretId, String targetUserId) {
 		
-		if(!userId.equals(targetUserId)){
+		/*if(!userId.equals(targetUserId)){*/
 			String ownerSecretKey = userId+"#"+secretId;
 			String key = targetUserId+"#"+secretId;
-			App.sharedSecrets.put(key, App.userSecrets.get(ownerSecretKey));
-		}
+			DataService.sharedSecrets.put(key, DataService.userSecrets.get(ownerSecretKey));
+		/*}*/
 	}
 	
 	/**
@@ -59,14 +63,7 @@ public class SecretServiceImpl implements SecretService {
 	 * @param  targetUserId denotes the user with whom secret is to be unshared
 	 */
 	public void unshareSecret(String userId, UUID secretId, String targetUserId) {
-		
-		if(!userId.equals(targetUserId)){
-			String ownerSecretKey = userId+"#"+secretId;
-			if(App.userSecrets.containsKey(ownerSecretKey))
-			{
-				String key = targetUserId+"#"+secretId; 
-				App.sharedSecrets.remove(key);
-			}
-		}
+		String key = targetUserId+"#"+secretId; 
+		DataService.sharedSecrets.remove(key);
 	}
 }
