@@ -49,11 +49,9 @@ public class SecretServiceImpl implements SecretService {
 	 */
 	public void shareSecret(String userId, UUID secretId, String targetUserId) {
 		
-		/*if(!userId.equals(targetUserId)){*/
 			String ownerSecretKey = userId+"#"+secretId;
 			String key = targetUserId+"#"+secretId;
 			DataService.sharedSecrets.put(key, DataService.userSecrets.get(ownerSecretKey));
-		/*}*/
 	}
 	
 	/**
