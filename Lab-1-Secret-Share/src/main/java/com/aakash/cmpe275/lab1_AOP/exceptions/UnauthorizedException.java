@@ -19,6 +19,7 @@ public class UnauthorizedException extends RuntimeException{
      */
     public UnauthorizedException(String message) {
         super(message);
+        System.out.println(message);
         this.message = message;
     }
     

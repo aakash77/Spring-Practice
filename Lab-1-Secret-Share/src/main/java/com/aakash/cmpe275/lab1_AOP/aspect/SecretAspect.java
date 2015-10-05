@@ -10,6 +10,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
+
 import com.aakash.cmpe275.lab1_AOP.exceptions.UnauthorizedException;
 import com.aakash.cmpe275.lab1_AOP.model.Secret;
 import com.aakash.cmpe275.lab1_AOP.service.DataService;
@@ -36,7 +37,7 @@ public class SecretAspect {
 			if(userId==null || userId=="" || secret==null)
 				throw new NullPointerException();
 		}catch(NullPointerException e){
-			throw new UnauthorizedException("Input cannot be null"); 
+			throw new NullPointerException("Input cannot be null"); 
 		}
 	}
 
@@ -72,7 +73,7 @@ public class SecretAspect {
 			if(!DataService.userSecrets.containsKey(key) && !DataService.sharedSecrets.containsKey(key))
 				throw new UnauthorizedException("Unauthorized Exception");
 		}catch(NullPointerException e){
-			throw new UnauthorizedException("Input cannot be null"); 
+			throw new NullPointerException("Input cannot be null"); 
 		}
 	}
 
@@ -95,7 +96,7 @@ public class SecretAspect {
 			if(!DataService.userSecrets.containsKey(key) && !DataService.sharedSecrets.containsKey(key))
 				throw new UnauthorizedException("Unauthorized Exception");
 		}catch(NullPointerException e){
-			throw new UnauthorizedException("Input cannot be null"); 
+			throw new NullPointerException("Input cannot be null"); 
 		}
 	}
 
@@ -123,10 +124,9 @@ public class SecretAspect {
 			if(DataService.userSecrets.containsKey(key))
 				joinPoint.proceed();
 			else if(!DataService.sharedSecrets.containsKey(key))
-				throw new UnauthorizedException("Unauthorized Exception");
-			
+				throw new Throwable();
 		}catch(NullPointerException e){
-			throw new UnauthorizedException("Input cannot be null"); 
+			throw new NullPointerException("Input cannot be null"); 
 		} catch (Throwable e) {
 			throw new UnauthorizedException("Unauthorized Exception");
 		}
