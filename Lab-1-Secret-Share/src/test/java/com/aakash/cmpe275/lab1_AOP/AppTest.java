@@ -3,6 +3,7 @@ package com.aakash.cmpe275.lab1_AOP;
 import java.util.UUID;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -21,8 +22,18 @@ public class AppTest {
 
 	@Autowired
 	DataService dataService;
-	ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
-	SecretService secretService = (SecretService) context.getBean("secretServiceImpl");
+	ApplicationContext context;
+	SecretService secretService;
+	
+	/**
+	 * Initializing context
+	 */
+	@Before
+	public void setUp(){
+		context = new ClassPathXmlApplicationContext("beans.xml");
+		secretService = (SecretService) context.getBean("secretServiceImpl");
+	}
+	
 	
 	/**
 	 * Test for Unauthorized Read
