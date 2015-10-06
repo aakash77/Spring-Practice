@@ -29,7 +29,7 @@ public class AppTest {
 	 * Initializing context
 	 */
 	@Before
-	public void setUp(){
+	public void setUp() throws Exception{
 		context = new ClassPathXmlApplicationContext("beans.xml");
 		secretService = (SecretService) context.getBean("secretServiceImpl");
 	}
@@ -42,9 +42,8 @@ public class AppTest {
 	public void testA()
 	{
 		System.out.println("Test A");
-		Secret secret = (Secret) context.getBean("secret");
-		UUID secretId = secretService.storeSecret("Alice", secret);
-		secretService.readSecret("Bob", secretId);
+		UUID aliceSecret = secretService.storeSecret("Alice", new Secret());
+		secretService.readSecret("Bob", aliceSecret);
 	}
 	
 	/**
@@ -53,10 +52,9 @@ public class AppTest {
 	@Test
 	public void testB(){
 		System.out.println("Test B");
-		Secret secret = (Secret) context.getBean("secret");
-		UUID secretId = secretService.storeSecret("Alice", secret);
-		secretService.shareSecret("Alice", secretId, "Bob");
-		secretService.readSecret("Bob", secretId);
+		UUID aliceSecret = secretService.storeSecret("Alice", new Secret());
+		secretService.shareSecret("Alice", aliceSecret, "Bob");
+		secretService.readSecret("Bob", aliceSecret);
 	}
 	
 	/**
@@ -66,11 +64,10 @@ public class AppTest {
 	public void testC(){
 		
 		System.out.println("Test C");
-		Secret secret = (Secret) context.getBean("secret");
-		UUID secretId = secretService.storeSecret("Alice", secret);
-		secretService.shareSecret("Alice", secretId, "Bob");
-		secretService.shareSecret("Bob", secretId, "Carl");
-		secretService.readSecret("Carl", secretId);
+		UUID aliceSecret = secretService.storeSecret("Alice", new Secret());
+		secretService.shareSecret("Alice", aliceSecret, "Bob");
+		secretService.shareSecret("Bob", aliceSecret, "Carl");
+		secretService.readSecret("Carl", aliceSecret);
 	}
 	
 	/**
@@ -80,12 +77,10 @@ public class AppTest {
 	public void testD(){
 		
 		System.out.println("Test D");
-		Secret secretAlice = (Secret) context.getBean("secret");
-		UUID secretIdAlice = secretService.storeSecret("Alice", secretAlice);
-		Secret secretCarl = (Secret) context.getBean("secret");
-		UUID secretIdCarl = secretService.storeSecret("Carl", secretCarl);
-		secretService.shareSecret("Alice", secretIdAlice, "Bob");
-		secretService.shareSecret("Bob", secretIdCarl, "Alice");
+		UUID aliceSecret = secretService.storeSecret("Alice", new Secret());
+		UUID carlSecret = secretService.storeSecret("Carl", new Secret());
+		secretService.shareSecret("Alice", aliceSecret, "Bob");
+		secretService.shareSecret("Bob", carlSecret, "Alice");
 	}
 	
 	/**
@@ -94,12 +89,11 @@ public class AppTest {
 	@Test(expected=UnauthorizedException.class)
 	public void testE(){
 		System.out.println("Test E");
-		Secret secret = (Secret) context.getBean("secret");
-		UUID secretId = secretService.storeSecret("Alice", secret);
-		secretService.shareSecret("Alice", secretId, "Bob");
-		secretService.shareSecret("Bob", secretId, "Carl");
-		secretService.unshareSecret("Alice", secretId, "Carl");
-		secretService.readSecret("Carl", secretId);
+		UUID aliceSecret = secretService.storeSecret("Alice", new Secret());
+		secretService.shareSecret("Alice", aliceSecret, "Bob");
+		secretService.shareSecret("Bob", aliceSecret, "Carl");
+		secretService.unshareSecret("Alice", aliceSecret, "Carl");
+		secretService.readSecret("Carl", aliceSecret);
 	}
 	
 	/**
@@ -108,13 +102,12 @@ public class AppTest {
 	@Test(expected=UnauthorizedException.class)
 	public void testF(){
 		System.out.println("Test F");
-		Secret secret = (Secret) context.getBean("secret");
-		UUID secretId = secretService.storeSecret("Alice", secret);
-		secretService.shareSecret("Alice", secretId, "Bob");
-		secretService.shareSecret("Alice", secretId, "Carl");
-		secretService.shareSecret("Carl", secretId, "Bob");
-		secretService.unshareSecret("Alice", secretId, "Bob");
-		secretService.readSecret("Bob", secretId);
+		UUID aliceSecret = secretService.storeSecret("Alice", new Secret());
+		secretService.shareSecret("Alice", aliceSecret, "Bob");
+		secretService.shareSecret("Alice", aliceSecret, "Carl");
+		secretService.shareSecret("Carl", aliceSecret, "Bob");
+		secretService.unshareSecret("Alice", aliceSecret, "Bob");
+		secretService.readSecret("Bob", aliceSecret);
 	}
 	
 	/**
@@ -123,12 +116,11 @@ public class AppTest {
 	@Test
 	public void testG(){
 		System.out.println("Test G");
-		Secret secret = (Secret) context.getBean("secret");
-		UUID secretId = secretService.storeSecret("Alice", secret);
-		secretService.shareSecret("Alice", secretId, "Bob");
-		secretService.shareSecret("Bob", secretId, "Carl");
-		secretService.unshareSecret("Bob", secretId, "Carl");
-		secretService.readSecret("Carl", secretId);
+		UUID aliceSecret = secretService.storeSecret("Alice", new Secret());
+		secretService.shareSecret("Alice", aliceSecret, "Bob");
+		secretService.shareSecret("Bob", aliceSecret, "Carl");
+		secretService.unshareSecret("Bob", aliceSecret, "Carl");
+		secretService.readSecret("Carl", aliceSecret);
 	}
 	
 	/**
@@ -137,10 +129,9 @@ public class AppTest {
 	@Test(expected=UnauthorizedException.class)
 	public void testH(){
 		System.out.println("Test H");
-		Secret secret = (Secret) context.getBean("secret");
-		UUID secretId = secretService.storeSecret("Alice", secret);
-		secretService.shareSecret("Alice", secretId, "Bob");
-		secretService.unshareSecret("Carl", secretId, "Bob");
+		UUID aliceSecret = secretService.storeSecret("Alice", new Secret());
+		secretService.shareSecret("Alice", aliceSecret, "Bob");
+		secretService.unshareSecret("Carl", aliceSecret, "Bob");
 	}
 	
 	/**
@@ -149,12 +140,11 @@ public class AppTest {
 	@Test(expected=UnauthorizedException.class)
 	public void testI(){
 		System.out.println("Test I");
-		Secret secret = (Secret) context.getBean("secret");
-		UUID secretId = secretService.storeSecret("Alice", secret);
-		secretService.shareSecret("Alice", secretId, "Bob");
-		secretService.shareSecret("Bob", secretId, "Carl");
-		secretService.unshareSecret("Alice", secretId, "Bob");
-		secretService.shareSecret("Bob", secretId, "Carl");
+		UUID aliceSecret = secretService.storeSecret("Alice", new Secret());
+		secretService.shareSecret("Alice", aliceSecret, "Bob");
+		secretService.shareSecret("Bob", aliceSecret, "Carl");
+		secretService.unshareSecret("Alice", aliceSecret, "Bob");
+		secretService.shareSecret("Bob", aliceSecret, "Carl");
 	}
 	
 	/**
@@ -163,10 +153,9 @@ public class AppTest {
 	@Test
 	public void testJ(){
 		System.out.println("Test J");
-		Secret secret = (Secret) context.getBean("secret");
-		UUID secretId1 = secretService.storeSecret("Alice", secret);
-		UUID secretId2 = secretService.storeSecret("Alice", secret);
-		boolean isSameSecretId = (secretId1==secretId2);
+		UUID aliceSecret1 = secretService.storeSecret("Alice", new Secret());
+		UUID aliceSecret2 = secretService.storeSecret("Alice", new Secret());
+		boolean isSameSecretId = (aliceSecret1==aliceSecret2);
 		Assert.assertEquals(false, isSameSecretId);
 	}
 }
