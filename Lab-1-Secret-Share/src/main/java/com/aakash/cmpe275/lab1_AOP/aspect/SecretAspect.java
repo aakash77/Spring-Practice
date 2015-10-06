@@ -29,7 +29,7 @@ public class SecretAspect {
 	 * @throws UnauthorizedException
 	 */
 	@Before("storeSecretAdviceAll()")
-	public void storeSecretAdviceBefore(JoinPoint joinPoint) throws UnauthorizedException{
+	public void storeSecretAdviceBefore(JoinPoint joinPoint) {
 		Object methodArgs[] = joinPoint.getArgs();
 		try{
 			String userId = (String) methodArgs[0];
@@ -71,7 +71,7 @@ public class SecretAspect {
 			System.out.println(userId+" reads the secret of ID "+secretId);
 			String key = userId+"#"+secretId;
 			if(!DataService.userSecrets.containsKey(key) && !DataService.sharedSecrets.containsKey(key))
-				throw new UnauthorizedException("Unauthorized Exception");
+				throw new UnauthorizedException("Unauthorized Exception : "+userId+" is not authorized to read this secret");
 		}catch(NullPointerException e){
 			throw new NullPointerException("Input cannot be null"); 
 		}
@@ -94,7 +94,7 @@ public class SecretAspect {
 			System.out.println(userId+" shares the secret of ID "+secretId+" with "+targetUserId);
 			String key = userId+"#"+secretId;
 			if(!DataService.userSecrets.containsKey(key) && !DataService.sharedSecrets.containsKey(key))
-				throw new UnauthorizedException("Unauthorized Exception");
+				throw new UnauthorizedException("Unauthorized Exception : "+userId+" is not authorized to share this secret");
 		}catch(NullPointerException e){
 			throw new NullPointerException("Input cannot be null"); 
 		}
@@ -109,8 +109,8 @@ public class SecretAspect {
 	@Around("execution(* com.aakash.cmpe275.lab1_AOP.service.SecretService.unshareSecret(..))")
 	public void unshareSecretAdvice(ProceedingJoinPoint joinPoint) throws UnauthorizedException{
 		Object methodArgs[] = joinPoint.getArgs();
+		String userId = (String) methodArgs[0];
 		try{
-			String userId = (String) methodArgs[0];
 			UUID secretId = (UUID) methodArgs[1];
 			String targetUserId = (String) methodArgs[2];
 			
@@ -128,9 +128,8 @@ public class SecretAspect {
 		}catch(NullPointerException e){
 			throw new NullPointerException("Input cannot be null"); 
 		} catch (Throwable e) {
-			throw new UnauthorizedException("Unauthorized Exception");
+			throw new UnauthorizedException("Unauthorized Exception : "+userId+" is not authorized to unshare this secret");
 		}
-
 	}
 	/**
 	 * Pointcut for storing a secret
