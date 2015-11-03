@@ -3,8 +3,6 @@
  */
 package com.cmpe275.lab2.dao.impl;
 
-import java.io.Serializable;
-
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -22,7 +20,9 @@ public class PersonDAOImpl implements PersonDAO {
 	@Autowired
 	SessionFactory sessionFactory;
 	
-	
+	/**
+	 * Create new person DAO implementation
+	 */
 	public Person create(Person person) {
 		
 		Session session = sessionFactory.openSession();
@@ -40,7 +40,10 @@ public class PersonDAOImpl implements PersonDAO {
 		}
 		return person;
 	}
-
+	
+	/**
+	 * Read person details DAO implementation
+	 */
 	public Person read(long id) {
 		Session session = sessionFactory.openSession();
 		Transaction tx =  session.beginTransaction();
@@ -56,15 +59,41 @@ public class PersonDAOImpl implements PersonDAO {
 		}
 		return person;
 	}
-
+	
+	/**
+	 * Update person DAO implementation
+	 */
 	public Person update(Person person) {
-		// TODO Auto-generated method stub
-		return null;
+		Session session = sessionFactory.openSession();
+		Transaction tx =  session.beginTransaction();
+		try{
+			session.update(person);
+			tx.commit();
+		}
+		catch(HibernateException h){
+			tx.rollback();
+		}finally{
+			session.close();
+		}
+		return person;
 	}
-
+	
+	/**
+	 * Delete person DAO implementation
+	 */
 	public Person delete(Person person) {
-		// TODO Auto-generated method stub
-		return null;
+		Session session = sessionFactory.openSession();
+		Transaction tx =  session.beginTransaction();
+		try{
+			session.delete(person);
+			tx.commit();
+		}
+		catch(HibernateException h){
+			tx.rollback();
+		}finally{
+			session.close();
+		}
+		return person;
 	}
 
 	

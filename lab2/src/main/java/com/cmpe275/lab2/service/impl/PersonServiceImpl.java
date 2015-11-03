@@ -22,13 +22,14 @@ public class PersonServiceImpl implements PersonService {
 	}
 
 	public Person update(Person person) {
-		// TODO Auto-generated method stub
-		return null;
+		return personDAO.update(person);
 	}
 
-	public Person delete(Person person) {
-		// TODO Auto-generated method stub
-		return null;
+	public Person delete(long id) {
+		Person person = personDAO.read(id);
+		if(person==null)
+			return null;
+		return personDAO.delete(person);
 	}
 
 	

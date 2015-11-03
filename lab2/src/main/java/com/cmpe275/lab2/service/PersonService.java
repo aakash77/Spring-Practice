@@ -1,7 +1,5 @@
 package com.cmpe275.lab2.service;
 
-import org.springframework.stereotype.Service;
-
 import com.cmpe275.lab2.model.Person;
 
 public interface PersonService {
@@ -27,6 +25,6 @@ public interface PersonService {
 	/**
 	 * delete person entry
 	 */
-	public Person delete(Person person);
+	public Person delete(long id);
 
 }
