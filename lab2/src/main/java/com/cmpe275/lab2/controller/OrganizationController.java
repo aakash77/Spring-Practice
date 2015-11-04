@@ -1,5 +1,6 @@
 package com.cmpe275.lab2.controller;
 
+import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -94,8 +95,12 @@ public class OrganizationController {
 	@RequestMapping(method=RequestMethod.DELETE,value="{id}")
 	@ResponseBody
 	public ResponseEntity<Organization> deleteOrg(@PathVariable long id){
-
-		Organization organization = organizationService.delete(id);
+		Organization organization = null;
+		try{
+			organization = organizationService.delete(id);
+		}catch(HibernateException e){
+			return new ResponseEntity<Organization>(organization, HttpStatus.BAD_REQUEST);
+		}
 		if(organization==null)
 			return new ResponseEntity<Organization>(organization, HttpStatus.NOT_FOUND);
 		else

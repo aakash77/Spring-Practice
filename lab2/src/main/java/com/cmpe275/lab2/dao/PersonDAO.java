@@ -3,6 +3,7 @@
  */
 package com.cmpe275.lab2.dao;
 
+import com.cmpe275.lab2.model.Organization;
 import com.cmpe275.lab2.model.Person;
 
 public interface PersonDAO {
@@ -27,5 +28,7 @@ public interface PersonDAO {
 	 * delete person entry
 	 */
 	public Person delete(Person person);
+
+	public Person getPersonByOrganization(Organization organization);
 
 }
