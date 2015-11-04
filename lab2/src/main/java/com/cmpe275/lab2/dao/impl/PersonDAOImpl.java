@@ -30,8 +30,6 @@ public class PersonDAOImpl implements PersonDAO {
 		try{
 			session.save(person);
 			tx.commit();
-			//Serializable id = session.getIdentifier(person);
-			/*return person;*/
 		}
 		catch(HibernateException h){
 			tx.rollback();
@@ -70,8 +68,9 @@ public class PersonDAOImpl implements PersonDAO {
 			session.update(person);
 			tx.commit();
 		}
-		catch(HibernateException h){
+		catch(Exception h){
 			tx.rollback();
+			person=null;
 		}finally{
 			session.close();
 		}

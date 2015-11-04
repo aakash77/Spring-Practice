@@ -17,7 +17,9 @@ import com.cmpe275.lab2.model.Person;
 import com.cmpe275.lab2.service.OrganizationService;
 import com.cmpe275.lab2.service.PersonService;
 
-
+/**
+ * Controller for handling person related requests 
+ */
 @Controller
 @RequestMapping(value="/person")
 public class PersonController {
@@ -27,7 +29,34 @@ public class PersonController {
 
 	@Autowired
 	OrganizationService organizationService;
-
+	
+	
+	/**
+	 * Handler for mapping person get request
+	 * @param id
+	 * @param format
+	 * @return requested person details
+	 */
+	@RequestMapping(method=RequestMethod.GET,value="{id}")
+	@ResponseBody
+	public ResponseEntity<Person> getPerson(@PathVariable long id,@RequestParam(required=false) String format){
+		/*System.out.println(format);*/
+		//TODO check for format and return accordingly
+		Person person = personService.read(id);
+		if(person==null)
+			return new ResponseEntity<Person>(person, HttpStatus.NOT_FOUND);
+		else
+			return new ResponseEntity<Person>(person, HttpStatus.OK);
+	}
+	
+	
+	/**
+	 * Handler for mapping person create request
+	 * @param person
+	 * @param address
+	 * @param organization
+	 * @return the new created person details
+	 */
 	@RequestMapping(method=RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<Person> addUser(@ModelAttribute Person person,@ModelAttribute Address address, @ModelAttribute Organization organization){
@@ -49,19 +78,8 @@ public class PersonController {
 		person = personService.create(person);
 		return new ResponseEntity<Person>(person, HttpStatus.OK);	
 	}
-
-	@RequestMapping(method=RequestMethod.GET,value="{id}")
-	@ResponseBody
-	public ResponseEntity<Person> getPerson(@PathVariable long id,@RequestParam(required=false) String format){
-		/*System.out.println(format);*/
-		//TODO check for format and return accordingly
-		Person person = personService.read(id);
-		if(person==null)
-			return new ResponseEntity<Person>(person, HttpStatus.NOT_FOUND);
-		else
-			return new ResponseEntity<Person>(person, HttpStatus.OK);
-	}
-
+	
+	
 	/**
 	 * Handler for mapping person update request
 	 * @param id

@@ -2,12 +2,14 @@ package com.cmpe275.lab2.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cmpe275.lab2.dao.PersonDAO;
 import com.cmpe275.lab2.model.Person;
 import com.cmpe275.lab2.service.PersonService;
 
 @Service
+@Transactional
 public class PersonServiceImpl implements PersonService {
 
 	@Autowired

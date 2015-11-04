@@ -1,11 +1,15 @@
 package com.cmpe275.lab2.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cmpe275.lab2.dao.OrganizationDAO;
 import com.cmpe275.lab2.model.Organization;
 import com.cmpe275.lab2.service.OrganizationService;
 
+@Service
+@Transactional
 public class OrganizationServiceImpl implements OrganizationService {
 
 	
@@ -13,28 +17,22 @@ public class OrganizationServiceImpl implements OrganizationService {
 	OrganizationDAO organizationDAO;
 	
 	public Organization create(Organization organization) {
-		return organization;
-		// TODO Auto-generated method stub
-
+		return organizationDAO.create(organization);
 	}
 
 	public Organization read(long id) {
-		// TODO Auto-generated method stub
-		
 		return organizationDAO.read(id);
 	}
 
 	public Organization update(Organization organization) {
-		// TODO Auto-generated method stub
-		return null;
-
+		return organizationDAO.update(organization);
 	}
 
-	public Organization delete(Organization organization) {
-		
-		// TODO Auto-generated method stub
-		return null;
-		
+	public Organization delete(long id) {
+		Organization organization = organizationDAO.read(id);
+		if(organization==null)
+			return null;
+		return organizationDAO.delete(organization);
 	}
 
 }
