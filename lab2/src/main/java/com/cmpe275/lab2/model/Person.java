@@ -1,38 +1,58 @@
 package com.cmpe275.lab2.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 
-import org.codehaus.jackson.annotate.JsonUnwrapped;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
 @Entity
 @Table(name="person")
+@XmlRootElement(name="person")
 public class Person {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
+
 	@Column(nullable=false)
 	private String firstname;
+	
 	@Column(nullable=false)
 	private String lastname;
+	
 	@Column(nullable=false)
 	private String email;
+	
 	private String description;
+	
 	@Embedded
 	@JsonUnwrapped
 	private Address address;
+	
 	@ManyToOne
 	@JoinColumn(referencedColumnName="id",name="organization")
 	private Organization organization;
-	/*private List<Person> friends;*/
+	
+	@ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "Friendship", 
+        joinColumns = @JoinColumn(name = "user_id"), 
+        inverseJoinColumns = @JoinColumn(name = "friend_id"))
+    private List<Person> friends = new ArrayList<Person>();
+	
 	/**
 	 * @return the id
 	 */
@@ -118,6 +138,23 @@ public class Person {
 		this.organization = organization;
 	}
 
+	/**
+	 * @return the friends
+	 */
+	public List<Person> getFriends() {
+		return friends;
+	}
+	/**
+	 * @param friends the friends to set
+	 */
+	public void setFriends(List<Person> friends) {
+		this.friends = friends;
+	}
+	
+	
+	/**
+	 * Custom toString method
+	 */
 	@Override
 	public String toString() {
 		return "{name : "+this.getFirstname()+" "+this.getLastname()+", email : "+this.getEmail()+", "+this.getAddress().toString()+", "+this.getOrganization().toString()+"}";

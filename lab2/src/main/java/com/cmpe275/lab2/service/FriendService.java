@@ -11,11 +11,11 @@ public interface FriendService {
 	/**
 	 * create friend
 	 */
-	public void create();
+	public String create(long id1,long id2);
 	
 	/**
 	 * delete friend
 	 */
-	public void delete();
+	public String delete(long id1,long id2);
 
 }

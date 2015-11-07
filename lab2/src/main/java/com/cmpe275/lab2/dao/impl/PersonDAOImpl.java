@@ -98,7 +98,10 @@ public class PersonDAOImpl implements PersonDAO {
 		}
 		return person;
 	}
-
+	
+	/**
+	 * check if any person connected to the organization
+	 */
 	public Person getPersonByOrganization(Organization organization) {
 		Session session = sessionFactory.openSession();
 		Transaction tx =  session.beginTransaction();

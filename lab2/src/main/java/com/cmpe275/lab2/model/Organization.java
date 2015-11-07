@@ -1,17 +1,20 @@
 package com.cmpe275.lab2.model;
 
 import javax.persistence.Column;
+
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
+
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import org.codehaus.jackson.annotate.JsonUnwrapped;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @Table(name="organization")
+@XmlRootElement(name="organization")
 public class Organization {
 
 	@Id
@@ -74,7 +77,9 @@ public class Organization {
 		this.address = address;
 	}
 	
-	
+	/**
+	 * Custom toString method
+	 */
 	@Override
 	public String toString() {
 		return "organization : "+this.getName()+","+this.getDescription()+","+this.getAddress().toString();

@@ -1,27 +1,41 @@
 <?xml  version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:jee="http://www.springframework.org/schema/jee"
-	xmlns:lang="http://www.springframework.org/schema/lang"
-	xmlns:mvc="http://www.springframework.org/schema/mvc"
-	xmlns:p="http://www.springframework.org/schema/p"
-	xmlns:tx="http://www.springframework.org/schema/tx"
-	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:lang="http://www.springframework.org/schema/lang"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:util="http://www.springframework.org/schema/util"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
 		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
-		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
 	<context:annotation-config />
 	<context:component-scan base-package="com.cmpe275.lab2" />
-	<mvc:annotation-driven />
-	
+	<mvc:annotation-driven content-negotiation-manager="contentNegotiationManager" />
+
+
+	<bean id="contentNegotiationManager"
+		class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+		<property name="favorPathExtension" value="false" />
+		<property name="favorParameter" value="true" />
+		<property name="ignoreAcceptHeader" value="true" />
+		<property name="useJaf" value="false" />
+		<property name="defaultContentType" value="application/json" />
+
+		<property name="mediaTypes">
+			<map>
+				<entry key="html" value="text/html" />
+				<entry key="json" value="application/json" />
+				<entry key="xml" value="application/xml" />
+			</map>
+		</property>
+	</bean>
+
 	<bean id="jspViewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="viewClass"
@@ -34,9 +48,8 @@
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
 		p:location="/WEB-INF/database.properties" />
 
-	<bean id="dataSource"
-		class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"
-		p:driverClassName="${database.driverClassName}"
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close" p:driverClassName="${database.driverClassName}"
 		p:url="${database.databaseurl}" p:username="${database.username}"
 		p:password="${database.password}" />
 
@@ -65,13 +78,14 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
-	<bean id="personServiceImpl" class="com.cmpe275.lab2.service.impl.PersonServiceImpl"/>
-	<bean id="organizationServiceImpl" class="com.cmpe275.lab2.service.impl.OrganizationServiceImpl"/>
-	<bean id="friendServiceImpl" class="com.cmpe275.lab2.service.impl.FriendServiceImpl"/>
-	
-	
-	<bean id="personDAOImpl" class="com.cmpe275.lab2.dao.impl.PersonDAOImpl"/>
-	<bean id="organizationDAOImpl" class="com.cmpe275.lab2.dao.impl.OrganizationDAOImpl"/>
-	<bean id="friendDAOImpl" class="com.cmpe275.lab2.dao.impl.FriendDAOImpl"/>
-	
+	<bean id="personServiceImpl" class="com.cmpe275.lab2.service.impl.PersonServiceImpl" />
+	<bean id="organizationServiceImpl" class="com.cmpe275.lab2.service.impl.OrganizationServiceImpl" />
+	<bean id="friendServiceImpl" class="com.cmpe275.lab2.service.impl.FriendServiceImpl" />
+
+
+	<bean id="personDAOImpl" class="com.cmpe275.lab2.dao.impl.PersonDAOImpl" />
+	<bean id="organizationDAOImpl" class="com.cmpe275.lab2.dao.impl.OrganizationDAOImpl" />
+	<bean id="friendDAOImpl" class="com.cmpe275.lab2.dao.impl.FriendDAOImpl" />
+
+
 </beans>

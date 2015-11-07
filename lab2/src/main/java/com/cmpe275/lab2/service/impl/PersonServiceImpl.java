@@ -15,25 +15,34 @@ public class PersonServiceImpl implements PersonService {
 	@Autowired
 	PersonDAO personDAO;
 	
+	/**
+	 * create person service method 
+	 */
 	public Person create(Person person) {
 		return personDAO.create(person);
 	}
-
+	
+	/**
+	 * read person service method
+	 */
 	public Person read(long id) {
 		return personDAO.read(id);
 	}
-
+	
+	/**
+	 * update person service method
+	 */
 	public Person update(Person person) {
 		return personDAO.update(person);
 	}
-
+	
+	/**
+	 * delete person service method
+	 */
 	public Person delete(long id) {
 		Person person = personDAO.read(id);
 		if(person==null)
 			return null;
 		return personDAO.delete(person);
 	}
-
-	
-
 }

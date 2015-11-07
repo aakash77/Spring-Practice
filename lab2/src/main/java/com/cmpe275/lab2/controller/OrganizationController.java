@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,9 @@ import com.cmpe275.lab2.model.Address;
 import com.cmpe275.lab2.model.Organization;
 import com.cmpe275.lab2.service.OrganizationService;
 
+/**
+ * Controller for handling organization related requests 
+ */
 @Controller
 @RequestMapping(value="/org")
 public class OrganizationController {
@@ -32,14 +36,32 @@ public class OrganizationController {
 	@RequestMapping(method=RequestMethod.GET,value="{id}")
 	@ResponseBody
 	public ResponseEntity<Organization> getOrg(@PathVariable long id,@RequestParam(required=false) String format){
-		/*System.out.println(format);*/
-		//TODO check for format and return accordingly
 		Organization organization = organizationService.read(id);
 		if(organization==null)
 			return new ResponseEntity<Organization>(organization, HttpStatus.NOT_FOUND);
 		else
 			return new ResponseEntity<Organization>(organization, HttpStatus.OK);
 	}
+	
+	
+	/**
+	 * Handler for mapping organization get request with content type html
+	 * @param id
+	 * @param model
+	 * @return view
+	 */
+	@RequestMapping(method=RequestMethod.GET,value="{id}",produces={"text/html"})
+	public String getOrgView(@PathVariable long id,Model model){
+		
+		Organization organization = organizationService.read(id);
+		if(organization==null){
+			model.addAttribute("resource", "Organization");
+			return "error";
+		}
+		model.addAttribute("organization", organization);
+		return "organization";
+	}
+	
 	
 	/**
 	 * Handler for mapping organization create request

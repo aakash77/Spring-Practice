@@ -21,18 +21,30 @@ public class OrganizationServiceImpl implements OrganizationService {
 	@Autowired
 	PersonDAO personDAO;
 	
+	/**
+	 * create organization service method
+	 */
 	public Organization create(Organization organization) {
 		return organizationDAO.create(organization);
 	}
-
+	
+	/**
+	 * read organization service method
+	 */
 	public Organization read(long id) {
 		return organizationDAO.read(id);
 	}
-
+	
+	/**
+	 * update organization service method
+	 */
 	public Organization update(Organization organization) {
 		return organizationDAO.update(organization);
 	}
-
+	
+	/**
+	 * delete organization service method
+	 */
 	public Organization delete(long id) throws HibernateException {
 		Organization organization = organizationDAO.read(id);
 		if(organization==null)

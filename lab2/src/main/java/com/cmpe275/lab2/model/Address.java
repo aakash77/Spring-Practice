@@ -59,6 +59,9 @@ public class Address {
 		this.zip = zip;
 	}
     
+	/**
+	 * Custom toString method
+	 */
 	@Override
 	public String toString() {
 		
