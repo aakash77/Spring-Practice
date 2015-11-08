@@ -84,7 +84,7 @@ public class PersonController {
 		}
 		if(address!=null)
 			person.setAddress(address);
-		if(organization!=null){
+		if(organization.getOrganization_id()!=0){
 			organization = organizationService.read(organization.getOrganization_id());
 			if(organization==null){
 				person=null;

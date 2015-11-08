@@ -54,7 +54,7 @@ public class FriendServiceImpl implements FriendService {
 		}
 
 		if(isAlreadyFriend)
-			return "404#"+p1.getFirstname()+" "+p1.getLastname()+" and "+p2.getFirstname()+" "+p2.getLastname()+" are already friends";
+			return "200#"+p1.getFirstname()+" "+p1.getLastname()+" and "+p2.getFirstname()+" "+p2.getLastname()+" are already friends";
 
 		p1.getFriends().add(p2);
 		friendDAO.create(p1);
