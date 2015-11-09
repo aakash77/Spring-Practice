@@ -48,6 +48,7 @@ public class PersonServiceImpl implements PersonService {
 		Person person = personDAO.read(id);
 		if(person==null)
 			return null;
+		
 		return personDAO.delete(person);
 	}
 }

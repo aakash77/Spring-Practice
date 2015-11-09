@@ -89,6 +89,10 @@ public class PersonDAOImpl implements PersonDAO {
 		Transaction tx =  session.beginTransaction();
 		try{
 			session.delete(person);
+			String sql = "DELETE FROM FRIENDSHIP WHERE friend_id = :friend_id";
+			Query query = session.createSQLQuery(sql);
+			query.setParameter("friend_id", person.getId());
+			query.executeUpdate();
 			tx.commit();
 		}
 		catch(HibernateException h){
