@@ -33,7 +33,7 @@ public class OrganizationController {
 	 * @param format
 	 * @return requested organization details
 	 */
-	@RequestMapping(method=RequestMethod.GET,value="{id}")
+	@RequestMapping(method=RequestMethod.GET,value="{id}",produces={"application/json","application/xml"})
 	@ResponseBody
 	public ResponseEntity<Organization> getOrg(@PathVariable long id,@RequestParam(required=false) String format){
 		Organization organization = organizationService.read(id);
@@ -61,7 +61,6 @@ public class OrganizationController {
 		model.addAttribute("organization", organization);
 		return "organization";
 	}
-	
 	
 	/**
 	 * Handler for mapping organization create request

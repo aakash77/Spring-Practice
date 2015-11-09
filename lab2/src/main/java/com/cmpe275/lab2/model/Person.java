@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
 @Entity
@@ -47,6 +48,7 @@ public class Person {
 	@JoinColumn(referencedColumnName="id",name="organization")
 	private Organization organization;
 	
+	@JsonIgnoreProperties({"description","address","friends","organization"})
 	@ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "Friendship", 
         joinColumns = @JoinColumn(name = "user_id"), 

@@ -57,9 +57,10 @@ public class FriendServiceImpl implements FriendService {
 			return "200#"+p1.getFirstname()+" "+p1.getLastname()+" and "+p2.getFirstname()+" "+p2.getLastname()+" are already friends";
 
 		p1.getFriends().add(p2);
+		p2.getFriends().add(p1);
 		friendDAO.create(p1);
+		friendDAO.create(p2);
 		return "200#"+p1.getFirstname()+" "+p1.getLastname()+" and "+p2.getFirstname()+" "+p2.getLastname()+" are friends now !!!!";
-
 	}
 	
 	/**
@@ -85,11 +86,9 @@ public class FriendServiceImpl implements FriendService {
 				break;
 			}
 		}
-		person=p1;
 		
-		if(!isFriend){			
+		if(isFriend){			
 			iterator = p2.getFriends().iterator();
-
 			while(iterator.hasNext()){
 				person = (Person) iterator.next();
 				if(person.getId()==id1){
@@ -98,13 +97,13 @@ public class FriendServiceImpl implements FriendService {
 					break;
 				}		
 			}
-			person=p2;
 		}
 		
 		if(!isFriend)
 			return "404#"+p1.getFirstname()+" "+p1.getLastname()+" and "+p2.getFirstname()+" "+p2.getLastname()+" are already not friends";
 			
-		friendDAO.delete(person);
+		friendDAO.delete(p1);
+		friendDAO.delete(p2);
 		return "200#"+p1.getFirstname()+" "+p1.getLastname()+" and "+p2.getFirstname()+" "+p2.getLastname()+" are no longer friends !!!!";
 	}
 }

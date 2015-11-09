@@ -33,6 +33,11 @@ public class PersonServiceImpl implements PersonService {
 	 * update person service method
 	 */
 	public Person update(Person person) {
+		/**
+		 * Getting old person object to keep friends list as is
+		 */
+		Person oldPerson = personDAO.read(person.getId());
+		person.setFriends(oldPerson.getFriends());
 		return personDAO.update(person);
 	}
 	
